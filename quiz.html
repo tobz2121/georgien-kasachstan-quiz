@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Kasachstan & Georgien Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      padding: 20px;
+    }
+    .quiz-container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    }
+    .question {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .answers label {
+      display: block;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .result {
+      font-size: 1.3em;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz-container">
+  <div id="quiz"></div>
+  <button id="submit">Antwort prüfen</button>
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+const quizData = [
+  // Kasachstan
+  { question: "Wie heißt die Hauptstadt von Kasachstan?", answers: ["Almaty", "Astana", "Nur-Sultan", "Taschkent"], correct: 1 },
+  { question: "Welche Sprache ist Amtssprache in Kasachstan?", answers: ["Kasachisch", "Russisch", "Usbekisch", "Türkisch"], correct: 0 },
+  { question: "Was ist die größte Religion in Kasachstan?", answers: ["Islam", "Christentum", "Judentum", "Buddhismus"], correct: 0 },
+  { question: "Was war Kasachstan früher?", answers: ["Ein NATO-Mitglied", "Teil der Sowjetunion", "Ein Königreich", "Unabhängig seit dem Mittelalter"], correct: 1 },
+  { question: "Was ist eine geografische Besonderheit Kasachstans?", answers: ["Es hat Meerzugang", "Es ist das größte Binnenland der Welt", "Es liegt am Äquator", "Es hat tropisches Klima"], correct: 1 },
+
+  // Georgien
+  { question: "Wie heißt die Hauptstadt von Georgien?", answers: ["Batumi", "Kutaisi", "Tiflis (Tbilisi)", "Gori"], correct: 2 },
+  { question: "Welche Schrift wird in Georgien verwendet?", answers: ["Lateinisch", "Kyrillisch", "Georgisch", "Arabisch"], correct: 2 },
+  { question: "Was ist die größte Religion in Georgien?", answers: ["Islam", "Judentum", "Orthodoxes Christentum", "Katholizismus"], correct: 2 },
+  { question: "Wofür ist Georgien weltweit bekannt?", answers: ["Export von Autos", "Antike Weinproduktion", "High-Tech-Industrie", "Uranabbau"], correct: 1 },
+  { question: "In welchem Gebirge liegt Georgien?", answers: ["Alpen", "Tien Shan", "Kaukasus", "Ural"], correct: 2 },
+
+  // Vergleich
+  { question: "Welches Land hat die größere Fläche?", answers: ["Kasachstan", "Georgien", "Beide gleich", "Wechselt jährlich"], correct: 0 },
+  { question: "Welches Land liegt vollständig in Asien?", answers: ["Kasachstan", "Georgien", "Beide", "Keines"], correct: 0 },
+  { question: "Welches Land hat Zugang zum Kaspischen Meer?", answers: ["Kasachstan", "Georgien", "Beide", "Keines"], correct: 0 },
+  { question: "Welches Land war 2023 stärker von Öl- und Gasexporten abhängig?", answers: ["Kasachstan", "Georgien", "Beide", "Keines"], correct: 0 },
+  { question: "Welches Land trat 2008 aus der GUS aus?", answers: ["Kasachstan", "Georgien", "Beide", "Keines"], correct: 1 },
+  { question: "Welches Land hat eine eigene, einzigartige Schrift?", answers: ["Kasachstan", "Georgien", "Beide", "Keines"], correct: 1 },
+  { question: "Welches Land verwendet (noch) kyrillische Schrift offiziell?", answers: ["Kasachstan", "Georgien", "Beide", "Keines"], correct: 0 },
+  { question: "Welches dieser Länder grenzt an Russland?", answers: ["Kasachstan", "Georgien", "Beide", "Keines"], correct: 2 },
+  { question: "Welches Land grenzt an das Schwarze Meer?", answers: ["Kasachstan", "Georgien", "Beide", "Keines"], correct: 1 },
+  { question: "Welches dieser Länder hat die größere Bevölkerung?", answers: ["Kasachstan", "Georgien", "Beide gleich", "Unbekannt"], correct: 0 }
+];
+
+let currentQuiz = 0;
+let score = 0;
+
+const quizContainer = document.getElementById("quiz");
+const resultContainer = document.getElementById("result");
+const submitButton = document.getElementById("submit");
+
+function loadQuiz() {
+  const q = quizData[currentQuiz];
+  quizContainer.innerHTML = `
+    <div class="question">${currentQuiz + 1}. ${q.question}</div>
+    <div class="answers">
+      ${q.answers.map((a, i) =>
+        `<label><input type="radio" name="answer" value="${i}"> ${a}</label>`
+      ).join("")}
+    </div>
+  `;
+}
+
+submitButton.addEventListener("click", () => {
+  const selected = document.querySelector('input[name="answer"]:checked');
+  if (!selected) return;
+
+  const answer = parseInt(selected.value);
+  if (answer === quizData[currentQuiz].correct) {
+    score++;
+  }
+
+  currentQuiz++;
+  if (currentQuiz < quizData.length) {
+    loadQuiz();
+  } else {
+    quizContainer.innerHTML = "";
+    submitButton.style.display = "none";
+    resultContainer.innerHTML = `🎉 Du hast <strong>${score}</strong> von <strong>${quizData.length}</strong> Fragen richtig beantwortet!`;
+  }
+});
+
+loadQuiz();
+</script>
+
+</body>
+</html>
